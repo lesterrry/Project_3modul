@@ -4,15 +4,37 @@
 //
 //  Created by MacBook - Latter on 04.03.2025.
 //
-
+//
 import SwiftUI
 
-struct TimelineCell: View {
+struct NewsCell: View {
+    var model: ArticleModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            AsyncImage(url: model.imageURL)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 300, height: 150)
+                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
+
+            Group {
+                Text(model.title)
+                    .font(.headline)
+                    .lineLimit(2)
+
+                Text(model.subtitle)
+                    .font(.caption)
+                    .lineLimit(3)
+            }
+            .padding(.horizontal, 20)
+
+            if let url = URL(string: model.sourceLink ?? "") {
+                Link(destination: url) {
+                    Text("Читать")
+                }
+                .padding(.bottom, 50)
+            }
+        }
     }
 }
 
-#Preview {
-    TimelineCell()
-}

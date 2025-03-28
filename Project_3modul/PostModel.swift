@@ -7,16 +7,6 @@
 
 //import Foundation
 import SwiftUI
-//
-//struct Post: Hashable {
-//    
-//    let title: String
-//    let othericon: Image
-//    let image1: Image
-//    let image2: Image
-//    let othericon: Image
-//    
-//}
 
 struct Post: Identifiable {
     let id = UUID()

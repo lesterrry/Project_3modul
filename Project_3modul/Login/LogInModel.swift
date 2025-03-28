@@ -8,19 +8,6 @@
 
 import Foundation
 
-enum Signup {
-    struct Request: Encodable {
-//        var username: String
-        var email: String
-        var password: String
-//        var secretResponse: String
-    }
-
-    struct Response: Decodable {
-        let token: String
-    }
-}
-
 enum Signin {
     struct Request: Encodable {
 //        var authenticity_token: String = "RZsvmojDXneJQEtHbSyAeZUrrhwEjPd2sbIKI49EYpXrIVzuvFgf5rsJk1xYskhjzRPbgSnbIAus_r-tdaeFqw"
@@ -45,12 +32,12 @@ final class ViewModel: ObservableObject {
     private var worker = AuthWorker()
     private var keychain = KeychainService()
 
-    func signUp(
+    func signin( // тут изменила
         email: String,
         password: String
     ) {
         let endpoint = AuthEndpoint.signup
-        let requestData = Signin.Request(
+        let requestData = Signup.Request( // тут вернула
             email: email,
             password: password
         )
@@ -73,7 +60,7 @@ final class ViewModel: ObservableObject {
                     }
                 }
 
-                print("failed to get token")
+                print("failed to get token") // остановка, не
             }
         }
     }
@@ -107,10 +94,12 @@ final class ViewModel: ObservableObject {
                 }
 
                 print("failed to get token")
+                // когда вводим неправильный пароль – не дает зайти и выдает faild to...
+                // но когда вводим правильный пароль – ает зайти, но тоже выдает faild to...
             }
         }
     }
-
+ 
     func getUsers() {
         let token = keychain.getString(forKey: Const.tokenKey) ?? ""
         let request = Request(endpoint: AuthEndpoint.users(token: token))

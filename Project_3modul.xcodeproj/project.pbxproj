@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AE0532F32D7865C70031FBA1 /* Project-3modul-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE0532F22D7865C70031FBA1 /* Project-3modul-Info.plist */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		AE0532F22D7865C70031FBA1 /* Project-3modul-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Project-3modul-Info.plist"; sourceTree = "<group>"; };
 		AE85AF042D7506F90065364F /* Project_3modul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Project_3modul.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -34,6 +39,7 @@
 			children = (
 				AE85AF062D7506F90065364F /* Project_3modul */,
 				AE85AF052D7506F90065364F /* Products */,
+				AE0532F22D7865C70031FBA1 /* Project-3modul-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,6 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE0532F32D7865C70031FBA1 /* Project-3modul-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +261,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Project_3modul/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Project-3modul-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -282,6 +290,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Project_3modul/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Project-3modul-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

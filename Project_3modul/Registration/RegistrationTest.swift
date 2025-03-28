@@ -12,7 +12,7 @@ struct RegistrationTest: View {
     @ObservedObject var viewModel: ViewModel
     @State var email: String = ""
     @State var password: String = ""
-    
+         
     var body: some View {
         
         NavigationStack {
@@ -62,10 +62,7 @@ struct RegistrationTest: View {
                             
                             
                             Button(action: {
-                                viewModel.signIn(
-                                    login: "be@bra.com",
-                                    password: "1234"
-                                )
+                                viewModel.signin(email: email, password: password)
                             }) {
                                 RoundedRectangle(cornerRadius: 14)
                                     .foregroundStyle(.mainaccent)
@@ -77,7 +74,8 @@ struct RegistrationTest: View {
                             }
                             .padding(.bottom, 4)
                             
-                            NavigationLink(destination: RegistrationView()) { // не могу насторить LogInView так как он просит viewModel: ViewModel()
+                            NavigationLink(destination: LogInView(viewModel: ViewModel())) {
+                                
                                 RoundedRectangle(cornerRadius: 14)
                                     .fill(Color.secondarygray)
                                     .overlay(

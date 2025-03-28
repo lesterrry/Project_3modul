@@ -11,7 +11,11 @@ import SwiftUI
 struct Project_3modulApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LogInView(viewModel: ViewModel())
+//            DonutView(vm: DonutVM())
+           // TestDonutCharts()
+        
+            //LogInView(viewModel: ViewModel()) //ContentView()
         }
     }
 }

@@ -17,10 +17,13 @@ struct LogInView: View {
         NavigationStack {
             VStack {
                 if viewModel.gotToken {
-                    Label("Label", systemImage: "42.circle")
-                    Button("Get all users") {
-                        viewModel.getUsers()
-                    }
+                    // TODO: - перейти на главный экран???
+                    ContentView()
+                    
+//                    Label("Label", systemImage: "42.circle")
+//                    Button("Get all users") {
+//                        viewModel.getUsers()
+                
                 } else {
                     VStack {
                         Image("logolight")
@@ -57,11 +60,11 @@ struct LogInView: View {
                                         .font(Font.custom("Robot-Medium", size: 16)))
                                 .padding(.bottom, 20)
                             
-                            
+                         
                             Button(action: {
                                 viewModel.signIn(
-                                    login: "be@bra.com",
-                                    password: "1234"
+                                    login: email,
+                                    password: password
                                 )
                             }) {
                                 RoundedRectangle(cornerRadius: 14)
@@ -73,8 +76,8 @@ struct LogInView: View {
                                             .font(Font.custom("Roboto-Medium", size: 18)))
                             }
                             .padding(.bottom, 4)
-                            
-                            NavigationLink(destination: RegistrationView()) {
+                             
+                            NavigationLink(destination: RegistrationTest(viewModel: ViewModel())) {
                                 RoundedRectangle(cornerRadius: 14)
                                     .fill(Color.secondarygray)
                                     .overlay(
@@ -100,9 +103,11 @@ struct LogInView: View {
                     //                        ) }
                     //
                     
+                    Spacer()
+                    BottomTextView()
+                    
                 }
-                Spacer()
-                BottomTextView()
+                
             }
         }
         
