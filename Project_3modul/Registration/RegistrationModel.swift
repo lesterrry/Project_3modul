@@ -37,47 +37,47 @@ final class SignupViewModel: ObservableObject {
     private var worker = SignupWorker()
     private var keychain = KeychainService()
 
-    func signUp(
+    func signup(
         email: String,
         password: String
     ) {
-        let endpoint = SignupEndpoint.signup
-        let requestData = Signin.Request( // тут вернула
-            email: email,
-            password: password
-        )
-
-        let body = try? JSONEncoder().encode(requestData)
-        let request = Request(endpoint: endpoint, method: .post, body: body)
+        let endpoint = SignupEndpoint.signup(email: email, password: password)
+        
+        let request = Request(endpoint: endpoint, method: .post)
         worker.load(request: request) { [weak self] result in
             switch result {
             case .failure(let error):
                 print(error)
             case .success(let data):
-                if
+                if let data {
+                    print(String(data: data, encoding: .utf8) ?? "")
+                }
+                guard
                     let data,
                     let response = try? JSONDecoder().decode(Signup.Response.self, from: data)
-                {
-                    let token = response.token
-                    self?.keychain.setString(token, forKey: Const.tokenKey)
-                    DispatchQueue.main.async {
-                        self?.gotToken = true
-                    }
+                else {
+                    print("failed to get token")
+                    return
                 }
-
-                print("failed to get toke")
+                
+                let token = response.token
+                self?.keychain.setString(token, forKey: Const.tokenKey)
+                DispatchQueue.main.async {
+                    self?.gotToken = true
+                    
+                }
             }
         }
     }
 }
 
 enum SignupEndpoint: Endpoint {
-    case signup
+    case signup(email: String, password: String)
 
     var rawValue: String {
         switch self {
         case .signup:
-            return "sign_up"
+            return "signup"
         }
     }
 
@@ -94,11 +94,11 @@ enum SignupEndpoint: Endpoint {
     
     var parameters: [String : String]? {
         switch self {
-        case .signup://(let email, let password):
-            return [:]
-//                "email": email,
-//                "password": password
-//            ]
+        case .signup(let email, let password):
+            return [
+                "email": email,
+                "password": password
+            ]
         }
     }
 }

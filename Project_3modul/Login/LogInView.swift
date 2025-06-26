@@ -9,8 +9,8 @@ import SwiftUI
 
 struct LogInView: View {
     @ObservedObject var viewModel: ViewModel
-    @State var email: String = ""
-    @State var password: String = ""
+    @State var email: String = "be@bra.com"
+    @State var password: String = "1234"
     
     var body: some View {
         
@@ -18,7 +18,7 @@ struct LogInView: View {
             VStack {
                 if viewModel.gotToken {
                     // TODO: - перейти на главный экран???
-                    ContentView()
+                    ContentView(viewModel: PostViewModel())
                     
 //                    Label("Label", systemImage: "42.circle")
 //                    Button("Get all users") {
@@ -77,7 +77,7 @@ struct LogInView: View {
                             }
                             .padding(.bottom, 4)
                              
-                            NavigationLink(destination: RegistrationTest(viewModel: ViewModel())) {
+                            NavigationLink(destination: RegistrationTest(viewModel: SignupViewModel())) {
                                 RoundedRectangle(cornerRadius: 14)
                                     .fill(Color.secondarygray)
                                     .overlay(
@@ -96,12 +96,12 @@ struct LogInView: View {
                         }
                     }.padding(.top, 154)
                     
-                    //                    Button("войти") {
-                    //                        viewModel.signIn(
-                    //                            login: "be@bra.com",
-                    //                            password: "1234"
-                    //                        ) }
-                    //
+//                                        Button("войти") {
+//                                            viewModel.signIn(
+//                                                login: "be@bra.com",
+//                                                password: "1234"
+//                                            ) }
+                    // yanaglukhova@gmail.com
                     
                     Spacer()
                     BottomTextView()

@@ -8,11 +8,15 @@
 import SwiftUI
 
 struct ProfileView: View {
-    
+    @ObservedObject var viewModel: AuthorViewModel
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) var dismiss
     
+//    @State private var user: UserProfile
+//    @State private var selectedImage: UIImage?
+    
     let post2 = Post(
+        id: 1,
         title: "эры тейлор свифт",
         images: ["tailorimage1", "tailorimage2"],
         circleTextTop: "Fearless",
@@ -25,6 +29,7 @@ struct ProfileView: View {
     );
     
     let post3 = Post(
+        id: 2,
         title: "путешествие в выпускном классе",
         images: ["arinatimeline1", "arinatimeline2"],
         circleTextTop: "2024",
@@ -37,6 +42,7 @@ struct ProfileView: View {
     );
     
     let post4 = Post(
+        id: 3,
         title: "лето 2025 — евротур",
         images: ["vasilisaimage1", "vasilisaimage2"],
         circleTextTop: "Белград",
@@ -73,10 +79,11 @@ struct ProfileView: View {
                         .padding(.leading, 28)
                     
                     HStack {
-                    Image("editeicon")
-                        .resizable()
-                        .frame(width: 37, height: 37)
-                       
+//                        NavigationLink(destination: EditProfileView(user: $user, selectedImage: $selectedImage)) {
+                            Image("editeicon")
+                                .resizable()
+                                .frame(width: 37, height: 37)
+//                        }
                     
                         NavigationLink(destination: SettingsView()) {
                             Image("settingsicon")
@@ -102,7 +109,17 @@ struct ProfileView: View {
                         .mask(Circle())
                         .frame(height: 363)
                     
-                    Image("profilephoto")
+//                    AsyncImage(
+//                        url: URL(string: "https://avatar.iran.liara.run/public")
+                    
+                    Image(
+                        "userim"
+                    )
+//                    { result in
+//                        result.image?
+//                            .resizable()
+//                            .scaledToFill()
+//                    }
                         .resizable()
                         .frame(width: 153, height: 153)
                         .overlay(
@@ -111,7 +128,7 @@ struct ProfileView: View {
                         )
                     
                     VStack {
-                        Text("istam rakhimov")
+                        Text(viewModel.fullName)
                             .foregroundStyle(.white)
                             .font(Font.custom("Roboto-SemiBold", size: 22))
                             .padding(.top, 234)
@@ -131,7 +148,7 @@ struct ProfileView: View {
                         .padding(.bottom, 10)
                         .padding(.leading, 20)
                     
-                    NavigationLink(destination: DonutView(vm: DonutVM())) {
+                    NavigationLink(destination: DonutView(vm: DonutVM(number: 2))) {
                         PostView(post: post2)
                             .padding(.bottom, 14)
                     }
@@ -163,10 +180,14 @@ struct ProfileView: View {
         }
         .navigationBarTitle("")
         .navigationBarBackButtonHidden(true)
+        .task {
+            let id = Int(KeychainService().getString(forKey: "userID") ?? "") ?? 0
+            viewModel.fetchAuthor(with: id)
+        }
         
     }
 }
 
 #Preview {
-    ProfileView()
+    ProfileView(viewModel: AuthorViewModel())
 }

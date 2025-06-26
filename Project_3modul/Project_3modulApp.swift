@@ -12,10 +12,16 @@ struct Project_3modulApp: App {
     var body: some Scene {
         WindowGroup {
             LogInView(viewModel: ViewModel())
+            
+            
+            
+            
+            
 //            DonutView(vm: DonutVM())
            // TestDonutCharts()
         
-            //LogInView(viewModel: ViewModel()) //ContentView()
+            //LogInView(viewModel: ViewModel()) //ContentView(viewModel: PostViewModel())
         }
     }
 }
+ 

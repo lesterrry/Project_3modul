@@ -18,11 +18,17 @@ enum Signin {
 
     struct Response: Decodable {
         let token: String
+        let user: User
+    }
+    
+    struct User: Decodable {
+        let id: Int
     }
 }
 
 final class ViewModel: ObservableObject {
     enum Const {
+        static let idKey = "userID"
         static let tokenKey = "token"
     }
 
@@ -32,12 +38,12 @@ final class ViewModel: ObservableObject {
     private var worker = AuthWorker()
     private var keychain = KeychainService()
 
-    func signin( // тут изменила
+    func signin(
         email: String,
         password: String
     ) {
-        let endpoint = AuthEndpoint.signup
-        let requestData = Signup.Request( // тут вернула
+        let endpoint = AuthEndpoint.signup(email: email, password: password)
+        let requestData = Signup.Request(
             email: email,
             password: password
         )
@@ -53,14 +59,14 @@ final class ViewModel: ObservableObject {
                     let data,
                     let response = try? JSONDecoder().decode(Signup.Response.self, from: data)
                 {
-                    let token = response.token
-                    self?.keychain.setString(token, forKey: Const.tokenKey)
+                    self?.keychain.setString(response.token, forKey: Const.tokenKey)
+                    self?.keychain.setString("\(response.user.id)", forKey: Const.idKey)
                     DispatchQueue.main.async {
                         self?.gotToken = true
                     }
                 }
 
-                print("failed to get token") // остановка, не
+                print("failed to get token") // тут проблемка, конкретная кстати
             }
         }
     }
@@ -82,20 +88,21 @@ final class ViewModel: ObservableObject {
             case .failure(let error):
                 print(error)
             case .success(let data):
-                if
+                guard
                     let data,
                     let response = try? JSONDecoder().decode(Signin.Response.self, from: data)
-                {
-                    let token = response.token
-                    self?.keychain.setString(token, forKey: Const.tokenKey)
-                    DispatchQueue.main.async {
-                        self?.gotToken = true
-                    }
+                else {
+                    print("failed to get token")
+                    return
                 }
-
-                print("failed to get token")
-                // когда вводим неправильный пароль – не дает зайти и выдает faild to...
-                // но когда вводим правильный пароль – ает зайти, но тоже выдает faild to...
+                
+                let token = response.token
+                self?.keychain.setString(token, forKey: Const.tokenKey)
+                self?.keychain.setString("\(response.user.id)", forKey: Const.idKey)
+                DispatchQueue.main.async {
+                    self?.gotToken = true
+                    
+                }
             }
         }
     }
@@ -119,14 +126,14 @@ final class ViewModel: ObservableObject {
 }
 
 enum AuthEndpoint: Endpoint {
-    case signup
+    case signup(email: String, password: String)
     case signin(email: String, password: String)
     case users(token: String)
 
     var rawValue: String {
         switch self {
         case .signup:
-            return "sign_up"
+            return "signup"
         case .signin:
             return "login"
         case .users:
@@ -135,34 +142,32 @@ enum AuthEndpoint: Endpoint {
     }
 
     var compositePath: String {
-        return "/api/\(self.rawValue)" // !!
+        return "/api/\(self.rawValue)"
     }
 
     var headers: [String: String] {
         switch self {
         case .users(let token): ["Authorization": "Bearer \(token)"]
-        default: ["Content-Type": "application/x-www-form-urlencoded"] // !!
+        default: ["Content-Type": "application/x-www-form-urlencoded"]
         }
 
     }
     
     var parameters: [String : String]? {
         switch self {
-        case .signup:
-            return nil
-        case .signin(let email, let password):
+        case .signup(let email, let password), .signin(let email, let password):
             return [
                 "email": email,
                 "password": password
             ]
-        case .users(let token):
+        case .users:
             return nil
         }
     }
 }
 
 final class AuthWorker {
-    let worker = BaseURLWorker(baseUrl: "https://lapse.aydar.media") // !!
+    let worker = BaseURLWorker(baseUrl: "https://lapse.aydar.media")
 
     func load(request: Request, completion: @escaping (Result<Data?, Error>) -> Void) {
         worker.executeRequest(with: request) { response in

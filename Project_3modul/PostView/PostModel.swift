@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Post: Identifiable {
-    let id = UUID()
+    let id: Int
     let title: String
     let images: [String]
     let circleTextTop: String

@@ -9,7 +9,10 @@ import SwiftUI
 
 struct TakeEmailView: View {
     
-    @State private var takemail: String = ""
+    @ObservedObject var viewModel: TakeEmailViewModel
+    init(viewModel: TakeEmailViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         
@@ -33,7 +36,7 @@ struct TakeEmailView: View {
                         )
                         .frame(width: 346, height: 37)
                     
-                    TextField("email", text: $takemail)
+                    TextField("email", text: $viewModel.email)
                         .foregroundColor(.mainsecondary)
                         .font(Font.custom("Roboto-Medium", size: 14))
                         .padding(.horizontal, 10)
@@ -44,8 +47,9 @@ struct TakeEmailView: View {
                 ZStack {//
                     Button(action: {
                         print("button tapped")
+                        viewModel.subscribe()
                     }) {
-                        Text("подписаться")
+                        Text(viewModel.isSubscribed ? "вы подписаны!" : "подписаться")
                             .foregroundColor(.white) //текст
                             .font(Font.custom("Roboto-Medium", size: 14))
                             .frame(width: 120, height: 28)
@@ -61,19 +65,10 @@ struct TakeEmailView: View {
                 .padding(.bottom, 6)
                 
             }
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        }        
     }
 }
 
 #Preview {
-    TakeEmailView()
+    TakeEmailView(viewModel: TakeEmailViewModel())
 }

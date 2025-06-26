@@ -23,7 +23,7 @@ struct PostView: View {
     
                 ImagesView(images: post.images, circleTextTop: post.circleTextTop, circleTextBottom: post.circleTextBottom)
                 
-                UserInfoView(userImage: post.userImage, userName: post.userName, userFollowers: post.userFollowers, likesCount: post.likesCount, commentsCount: post.commentsCount)
+                UserInfoView(userImage: post.userImage, userName: post.userName, userFollowers: post.userFollowers, likesCount: post.likesCount, commentsCount: post.commentsCount, viewModel: UserInfoViewModel(userID: 0, lifetime: 0))
             }
         }
     }
@@ -93,50 +93,10 @@ struct CircleView: View {
     }
 }
 
-struct UserInfoView: View {
-    let userImage: String
-    let userName: String
-    let userFollowers: String
-    let likesCount: String
-    let commentsCount: String
-    
-    var body: some View {
-        HStack {
-        //
-            HStack  {
-                Image(userImage)
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                
-                VStack (alignment: .leading) {
-                    Text(userName)
-                        .font(Font.custom("Roboto-Medium", size: 14))
-                    Text(userFollowers)
-                        .font(Font.custom("Roboto-Regular", size: 12))
-                }
-                Spacer()
-            }
-           
-            HStack(spacing: 5) {
-                Image("hearticon")
-                    .resizable()
-                    .frame(width: 23, height: 23)
-                Text(likesCount)
-                    .font(Font.custom("Roboto-Regular", size: 12))
-                Image("messageicon")
-                    .resizable()
-                    .frame(width: 23, height: 23)
-                    .padding(.leading, 4)
-                Text(commentsCount)
-                    .font(Font.custom("Roboto-Regular", size: 12))
-            } .padding(.trailing, 36) 
-        }.padding(.leading, 36)
-        .padding(.top, 6)
-    }
-}
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(viewModel: PostViewModel())
     }
 }

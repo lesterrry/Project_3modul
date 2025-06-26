@@ -9,16 +9,16 @@ import SwiftUI
 
 struct RegistrationTest: View {
     
-    @ObservedObject var viewModel: ViewModel
-    @State var email: String = ""
-    @State var password: String = ""
+    @ObservedObject var viewModel: SignupViewModel
+    @State var email: String = "yanaglukhova@gmail.com"
+    @State var password: String = "1234"
          
     var body: some View {
         
         NavigationStack {
             VStack {
                 if viewModel.gotToken {
-                    ContentView()
+                    ContentView(viewModel: PostViewModel())
 //                    Label("Label", systemImage: "42.circle")
 //                    Button("Get all users") {
 //                        viewModel.getUsers()
@@ -62,7 +62,7 @@ struct RegistrationTest: View {
                             
                             
                             Button(action: {
-                                viewModel.signin(email: email, password: password)
+                                viewModel.signup(email: email, password: password)
                             }) {
                                 RoundedRectangle(cornerRadius: 14)
                                     .foregroundStyle(.mainaccent)
@@ -108,5 +108,5 @@ struct RegistrationTest: View {
 
 
 #Preview {
-    RegistrationTest(viewModel: ViewModel())
+    RegistrationTest(viewModel: SignupViewModel())
 }
